@@ -2,7 +2,7 @@ import quantum_functions as fn
 import numpy as np
 
 def potential(x_axis):
-    
+    '''In this function the user can insert any potential they want. Since this script was intentionally created to study the eigenstates of a constrained particle, please insert a potential which reaches the value infinity at the extremes of space grid. As an example, a quadratic potential well is already written.'''
     a = 0.0002
     
     return a*np.square(x_axis)
@@ -27,7 +27,9 @@ while initialisation == True:
     print('Input the variance of the wave packet (suggested values: 1.5-2.5) \n')
     get_variance = float(input())
     
-    psi = fn.wave_pacekt(pos = get_initial_position, mom = get_momentum, sigma = get_variance)
+    psi = fn.wave_packet(pos = get_initial_position, mom = get_momentum, sigma = get_variance)
+    
+    print('The code is running...')
     
     fn.eigenstates(psi, V)
     break
