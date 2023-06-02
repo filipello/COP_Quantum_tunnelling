@@ -35,7 +35,7 @@ def complex_plot(x_value, y_value, title_plot = '', save_option = False, name_fi
    
     
 def wave_packet(pos=0, mom=0, sigma=2):
-'''This method takes the two parameters of a Gaussian distribution and returns the wave function of a particle with a certain momentum moduled as a Gaussian wave packet'''
+    '''This method takes the two parameters of a Gaussian distribution and returns the wave function of a particle with a certain momentum moduled as a Gaussian wave packet'''
     return (2 * np.pi * np.square(sigma))**(-1/4) * np.exp(1j*mom*x_axis)*np.exp(-np.square((x_axis-pos)/(np.square(sigma))),dtype=complex)
 
 
@@ -96,7 +96,7 @@ def simulation(wave_func, potential=0, steps=100000, dt=0.003, orthogonal_to = 0
 
 
 def pot_init(potential):
-'''This method is used for visualization of the potential in the animation'''
+    '''This method is used for visualization of the potential in the animation'''
     plt.fill_between(x_axis, potential, -10,color='orange',alpha=0.2)
 
 def animate(evolving_wave, potential, init_func = None, title = ''):
@@ -107,9 +107,7 @@ def animate(evolving_wave, potential, init_func = None, title = ''):
     plt.ylim(-2,2)
     plt.xlabel('Position')
     plt.ylabel(r'$\psi$')
-    if init_func:
-        init_func()
-    
+    plt.legend()
     
     def animation(frame):
         '''This method is required to display different Line2D objects at each frame'''
@@ -120,8 +118,8 @@ def animate(evolving_wave, potential, init_func = None, title = ''):
 
     anim = FuncAnimation(fig, animation, frames=int(len(evolving_wave)), init_func = pot_init(potential),  interval = 50)
     
-    plt.legend()
-    plt.show() 
+   
+    #plt.show() 
 
     return anim
 
@@ -138,13 +136,14 @@ def transmission_coeff(wave_func, measuring_point):
 def quantum_tunnelling(wave_func, V, measuring_point):
     '''This function takes an initial wave function, a potential (which should be suited for the tunnelling effect) and a point of the space grid. It simulates the wave function interacting with the potential, makes an animation of it and returns the probability of finding the particle before and after the input point'''
     phi = simulation(wave_func, potential = V, steps = 50000)
+        
+    anim = animate(phi, V, title = 'Quantum Tunnelling')
+    gif_name = r"tunnelling_animation.gif" 
+    writergif = animation.PillowWriter(fps=30, metadata=dict(artist='Me')) 
+    anim.save(gif_name, writer=writergif)
+
     
     reflected_wave, transmitted_wave = transmission_coeff(phi[-1,:], measuring_point)
-    
-    GIF = animate(phi, V, title = 'Quantum Tunnelling')
-    gif_name = r"tunnelling_animation.gif" 
-    writergif = animation.PillowWriter(fps=30) 
-    GIF.save(gif_name, writer=writergif)
     
     return reflected_wave, transmitted_wave
 
@@ -164,7 +163,7 @@ def ground_state(wave_func, V):
 #     writergif = animation.PillowWriter(fps=30) 
 #     GIF.save(gif_name, writer=writergif)
     
-    ground_eigenstate_evolving = simulation(ground_eigenstate[-1,:], potential = V, dt = 0.007, steps = 160000, save_every = 400)
+    ground_eigenstate_evolving = simulation(ground_eigenstate[-1,:], potential = V, dt = 0.007, steps = 120000, save_every = 400)
     
     GIF = animate(ground_eigenstate_evolving, V, title = 'Ground State')
     gif_name = r"ground_state_animation.gif" 
@@ -184,7 +183,7 @@ def first_state(wave_func, ground_func, V):
 #     writergif = animation.PillowWriter(fps=30) 
 #     GIF0.save(gif_name, writer=writergif)
     
-    first_eigenstate_evolving = simulation(first_eigenstate[-1,:], potential = V, dt = 0.007, steps = 160000, save_every = 400)
+    first_eigenstate_evolving = simulation(first_eigenstate[-1,:], potential = V, dt = 0.007, steps = 120000, save_every = 400)
 
     GIF = animate(first_eigenstate_evolving, V, title = 'First excited State')
     gif_name = r"first_state_animation.gif" 
@@ -210,7 +209,7 @@ def second_state(wave_func, ground_func, first_func, V):
 #     writergif = animation.PillowWriter(fps=30) 
 #     GIF0.save(gif_name, writer=writergif)
 
-    second_eigenstate_evolving = simulation(second_eigenstate[-1,:], potential = V, dt = 0.007, steps = 160000, save_every = 400)
+    second_eigenstate_evolving = simulation(second_eigenstate[-1,:], potential = V, dt = 0.007, steps = 120000, save_every = 400)
 
     GIF = animate(second_eigenstate_evolving, V, title = 'Second excited State')
     gif_name = r"second_state_animation.gif" 
@@ -223,9 +222,10 @@ def second_state(wave_func, ground_func, first_func, V):
 def eigenstates(wave_func, V):
     '''this method takes a wave function and a potential. It calculates the first three eigenstates and print theire corrresponding coefficients. It also makes animations of the eigenstates evolving in time (showing that only the phase will change).'''
     ground_eigenstate, c_0 = ground_state(wave_func, V)
-    
+    print('Ground state calculated. The code is still running')
     first_eigenstate, c_1 = first_state(wave_func, ground_eigenstate, V)
-    
+    print('First excited state calculated. The code is still running')
+
     second_eigenstate, c_2 = second_state(wave_func, ground_eigenstate, first_eigenstate, V)
     
     print('c_0 =' + str(np.abs(c_0)))

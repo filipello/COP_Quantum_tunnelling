@@ -3,9 +3,9 @@ import numpy as np
 
 def potential(x_axis):
     '''In this function the user can insert any potential they want. Since this script was intentionally created to study the tunnelling effect, please insert a potential which reaches the value 0 at the extremes of space grid. As an example, a rectangular barrier is already written'''
-    a_begin = 12
+    a_begin = 13
     a_end = 15
-    V_0 = 3
+    V_0 = 2.5
     
     return np.where((x_axis>a_begin)&(x_axis<a_end),V_0,0)
 
