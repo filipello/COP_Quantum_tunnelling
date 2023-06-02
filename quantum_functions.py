@@ -117,10 +117,8 @@ def animate(evolving_wave, potential, init_func = None, title = ''):
         return probability, real_wave, imag_wave
 
     anim = FuncAnimation(fig, animation, frames=int(len(evolving_wave)), init_func = pot_init(potential),  interval = 50)
-    
    
-    #plt.show() 
-
+   
     return anim
 
 

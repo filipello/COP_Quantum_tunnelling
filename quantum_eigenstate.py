@@ -3,7 +3,7 @@ import numpy as np
 
 def potential(x_axis):
     '''In this function the user can insert any potential they want. Since this script was intentionally created to study the eigenstates of a constrained particle, please insert a potential which reaches the value infinity at the extremes of space grid. As an example, a quadratic potential well is already written.'''
-    a = 0.0002
+    a = 0.0003
     
     return a*np.square(x_axis)
 
